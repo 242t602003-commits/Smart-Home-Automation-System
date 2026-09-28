@@ -1,0 +1,395 @@
+# Smart-Home-Automation-System
+Controls household electrical appliances automatically using sensors, microcontrollers, or IoT technology.
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Smart Home Automation</title>
+
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+            font-family: Arial, sans-serif;
+        }
+
+        body {
+            background: #f4f7fb;
+            color: #222;
+        }
+
+        /* Header */
+        header {
+            background: #1e293b;
+            color: white;
+            padding: 20px 40px;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+
+        header h1 {
+            font-size: 26px;
+        }
+
+        .status {
+            background: #22c55e;
+            padding: 8px 15px;
+            border-radius: 20px;
+            font-size: 14px;
+        }
+
+        /* Main Container */
+        .container {
+            max-width: 1200px;
+            margin: 30px auto;
+            padding: 0 20px;
+        }
+
+        .welcome {
+            margin-bottom: 25px;
+        }
+
+        .welcome h2 {
+            font-size: 28px;
+            margin-bottom: 8px;
+        }
+
+        .welcome p {
+            color: #64748b;
+        }
+
+        /* Information Cards */
+        .info-grid {
+            display: grid;
+            grid-template-columns: repeat(3, 1fr);
+            gap: 20px;
+            margin-bottom: 30px;
+        }
+
+        .info-card {
+            background: white;
+            padding: 22px;
+            border-radius: 15px;
+            box-shadow: 0 4px 15px rgba(0,0,0,0.08);
+        }
+
+        .info-card h3 {
+            color: #64748b;
+            font-size: 15px;
+            margin-bottom: 10px;
+        }
+
+        .info-card p {
+            font-size: 26px;
+            font-weight: bold;
+        }
+
+        /* Appliance Section */
+        .section-title {
+            margin-bottom: 20px;
+            font-size: 22px;
+        }
+
+        .appliance-grid {
+            display: grid;
+            grid-template-columns: repeat(3, 1fr);
+            gap: 20px;
+        }
+
+        .appliance {
+            background: white;
+            padding: 25px;
+            border-radius: 15px;
+            box-shadow: 0 4px 15px rgba(0,0,0,0.08);
+            transition: 0.3s;
+        }
+
+        .appliance:hover {
+            transform: translateY(-4px);
+        }
+
+        .icon {
+            font-size: 45px;
+            margin-bottom: 15px;
+        }
+
+        .appliance h3 {
+            margin-bottom: 5px;
+        }
+
+        .appliance p {
+            color: #64748b;
+            margin-bottom: 18px;
+        }
+
+        /* Toggle Button */
+        .toggle {
+            width: 60px;
+            height: 30px;
+            background: #cbd5e1;
+            border-radius: 20px;
+            border: none;
+            cursor: pointer;
+            position: relative;
+            transition: 0.3s;
+        }
+
+        .toggle::after {
+            content: "";
+            width: 24px;
+            height: 24px;
+            background: white;
+            position: absolute;
+            top: 3px;
+            left: 3px;
+            border-radius: 50%;
+            transition: 0.3s;
+        }
+
+        .toggle.active {
+            background: #22c55e;
+        }
+
+        .toggle.active::after {
+            left: 33px;
+        }
+
+        .state {
+            margin-top: 12px;
+            font-weight: bold;
+            color: #64748b;
+        }
+
+        .state.on {
+            color: #16a34a;
+        }
+
+        /* Footer */
+        footer {
+            text-align: center;
+            padding: 30px;
+            margin-top: 40px;
+            color: #64748b;
+        }
+
+        /* Responsive */
+        @media (max-width: 800px) {
+            .info-grid,
+            .appliance-grid {
+                grid-template-columns: repeat(2, 1fr);
+            }
+        }
+
+        @media (max-width: 550px) {
+            header {
+                padding: 15px 20px;
+            }
+
+            header h1 {
+                font-size: 20px;
+            }
+
+            .info-grid,
+            .appliance-grid {
+                grid-template-columns: 1fr;
+            }
+        }
+    </style>
+</head>
+
+<body>
+
+    <!-- Header -->
+    <header>
+        <h1>🏠 Smart Home</h1>
+        <div class="status">● System Online</div>
+    </header>
+
+    <!-- Main Content -->
+    <div class="container">
+
+        <div class="welcome">
+            <h2>Smart Home Automation</h2>
+            <p>Control and monitor your home appliances from one dashboard.</p>
+        </div>
+
+        <!-- Information -->
+        <div class="info-grid">
+
+            <div class="info-card">
+                <h3>🌡️ Temperature</h3>
+                <p id="temperature">27°C</p>
+            </div>
+
+            <div class="info-card">
+                <h3>💡 Active Devices</h3>
+                <p id="activeDevices">0</p>
+            </div>
+
+            <div class="info-card">
+                <h3>⚡ Energy Usage</h3>
+                <p id="energy">0 W</p>
+            </div>
+
+        </div>
+
+        <!-- Appliances -->
+        <h2 class="section-title">Home Appliances</h2>
+
+        <div class="appliance-grid">
+
+            <!-- Light -->
+            <div class="appliance">
+                <div class="icon">💡</div>
+                <h3>Living Room Light</h3>
+                <p>LED Light</p>
+
+                <button class="toggle"
+                        data-power="10"
+                        onclick="toggleDevice(this)">
+                </button>
+
+                <div class="state">OFF</div>
+            </div>
+
+            <!-- Fan -->
+            <div class="appliance">
+                <div class="icon">🌀</div>
+                <h3>Ceiling Fan</h3>
+                <p>Living Room</p>
+
+                <button class="toggle"
+                        data-power="75"
+                        onclick="toggleDevice(this)">
+                </button>
+
+                <div class="state">OFF</div>
+            </div>
+
+            <!-- AC -->
+            <div class="appliance">
+                <div class="icon">❄️</div>
+                <h3>Air Conditioner</h3>
+                <p>Bedroom</p>
+
+                <button class="toggle"
+                        data-power="1200"
+                        onclick="toggleDevice(this)">
+                </button>
+
+                <div class="state">OFF</div>
+            </div>
+
+            <!-- TV -->
+            <div class="appliance">
+                <div class="icon">📺</div>
+                <h3>Smart TV</h3>
+                <p>Living Room</p>
+
+                <button class="toggle"
+                        data-power="100"
+                        onclick="toggleDevice(this)">
+                </button>
+
+                <div class="state">OFF</div>
+            </div>
+
+            <!-- Refrigerator -->
+            <div class="appliance">
+                <div class="icon">🧊</div>
+                <h3>Refrigerator</h3>
+                <p>Kitchen</p>
+
+                <button class="toggle"
+                        data-power="150"
+                        onclick="toggleDevice(this)">
+                </button>
+
+                <div class="state">OFF</div>
+            </div>
+
+            <!-- Washing Machine -->
+            <div class="appliance">
+                <div class="icon">🧺</div>
+                <h3>Washing Machine</h3>
+                <p>Utility Room</p>
+
+                <button class="toggle"
+                        data-power="500"
+                        onclick="toggleDevice(this)">
+                </button>
+
+                <div class="state">OFF</div>
+            </div>
+
+        </div>
+
+    </div>
+
+    <footer>
+        <p>Smart Home Automation System | EEE Project</p>
+    </footer>
+
+    <script>
+
+        function toggleDevice(button) {
+
+            // Find the device state
+            const state = button.parentElement.querySelector(".state");
+
+            // Device power
+            const power = Number(button.dataset.power);
+
+            // Toggle ON/OFF
+            button.classList.toggle("active");
+
+            if (button.classList.contains("active")) {
+                state.textContent = "ON";
+                state.classList.add("on");
+            } else {
+                state.textContent = "OFF";
+                state.classList.remove("on");
+            }
+
+            updateDashboard();
+        }
+
+        function updateDashboard() {
+
+            // Find all active devices
+            const activeButtons =
+                document.querySelectorAll(".toggle.active");
+
+            let totalPower = 0;
+
+            activeButtons.forEach(button => {
+                totalPower += Number(button.dataset.power);
+            });
+
+            // Update active device count
+            document.getElementById("activeDevices")
+                .textContent = activeButtons.length;
+
+            // Update energy usage
+            document.getElementById("energy")
+                .textContent = totalPower + " W";
+        }
+
+        // Simulated temperature update
+        setInterval(function () {
+
+            let temperature =
+                Math.floor(Math.random() * 5) + 25;
+
+            document.getElementById("temperature")
+                .textContent = temperature + "°C";
+
+        }, 5000);
+
+    </script>
+
+</body>
+</html>
